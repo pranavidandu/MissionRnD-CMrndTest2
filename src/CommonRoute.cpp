@@ -47,9 +47,94 @@ First Island in DTD ie 'D' occurs alphabatically before 'H' and 'Z')
 #include <stdlib.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-
+#include <string.h>
+int path(char * hacklist, char *codelist, int i, int j, int *cost, char *com_route, int index){
+	if (hacklist[i] != codelist[j]){
+		com_route[index] = '\0';
+		return *cost;
+	}
+	*cost += hacklist[i] - 64;
+	com_route[index++] = hacklist[i];
+	path(hacklist, codelist, i + 1, j + 1,  cost, com_route, index);
+}
+void copy(char *temp, char *main, int i){
+	printf("im jhgfd\n");
+	if (temp[i] == '\0'){
+		main[i] = '\0';
+		return;
+	}
+	main[i] = temp[i];
+	copy(temp, main, i++);
+}
 char * find_common_route(char * hacklist, char *codelist, int *cost){
-	return NULL;
+	if(hacklist == NULL || codelist == NULL)
+		return NULL;
+	int i = 0, j = 0, temp = 0;
+	char *com_route = (char*)malloc(sizeof(int)*100);
+	char *temp_route = NULL;
+	int k = 0;
+	for (i = 0; hacklist[i] != '\0'; i++){
+		*cost = 0;
+		k = 0;
+		for (j = 0; codelist[j] != '\0'; j++){
+			if (hacklist[i] == codelist[j]){
+				*cost += hacklist[i] - 64;
+				com_route[k++] = hacklist[i];
+				*cost = path(hacklist, codelist, i + 1, j + 1, cost, com_route, k);
+				printf("%s comm\n", com_route);
+				//printf("im out cost befor %d\n", *cost);
+				//temp_route = com_route;
+				if (temp_route == NULL){
+					int m = 0;
+					while (com_route[m] != '\0'){
+						//printf("no comin\n");
+						temp_route[m] = com_route[m];
+						m++;
+					}
+					temp_route[m] = '\0';
+					printf("temp %s\n", temp_route);
+					break;
+				}
+				if (temp == *cost){
+					if (temp_route[0] < com_route[0]){
+						int m = 0;
+						while (com_route[m] != '\0'){
+							temp_route[m] = com_route[m];
+							m++;
+						}
+						temp_route[m] = '\0';
+					}
+					else{
+						int m = 0;
+						while (temp_route[m] != '\0'){
+							com_route[m] = temp_route[i];
+							m++;
+						}
+						com_route[m] = '\0';
+					}
+				}
+				else if (temp > *cost){
+					printf("temp > cost\n");
+					*cost = temp;
+					//int m = 0;
+					int m = 0;
+					while (temp_route[m] != '\0'){
+						com_route[m] = temp_route[i];
+						m++;
+					}
+					com_route[m] = '\0';
+				}
+				else{
+					temp = *cost;
+					//copy(temp_route, com_route, 0);
+				}
+				printf("cost %d is after\n", *cost);
+				printf("->%s \n", com_route);
+				break;
+			}
+		}
+	}
+	printf("%s string\n", com_route);
+	return com_route;
 }
 

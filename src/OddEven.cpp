@@ -39,6 +39,93 @@ struct oddevennode{
 };
 
 int * oddeven_sll(struct oddevennode *head){
+	if (head == NULL)
+		return NULL;
+	int arr[2];
+	arr[0] = 1, arr[1] = 1;
+	struct oddevennode *ptr1 = head;
+	struct oddevennode *ptr2 = head;
+	if (ptr2->data % 2 == 0){
+		while (1){
+			ptr2 = ptr2->next;
+			if (ptr2 == NULL)
+				break;
+			if (ptr2->data % 2 == 0)
+			{
+				arr[1]  += 1;
+				ptr1->random = ptr2;
+				ptr1 = ptr2;
+			}
+		}
+		ptr1 = head->next;
+		ptr2 = head->next;
+		while (ptr1->data % 2 == 0){
+			ptr1 = ptr1->next;
+			ptr2 = ptr2->next;
+		}
+		while (1){
+			printf("3rd while\n");
+			ptr2 = ptr2->next;
+			if (ptr2 == NULL)
+				break;
+			if (ptr2->data % 2 != 0)
+			{
+				arr[0] += 1;
+				ptr1->random = ptr2;
+				ptr1 = ptr2;
+			}
 
-	return NULL;
+		}
+
+	}
+	else{
+		while (1){
+			ptr2 = ptr2->next;
+			if (ptr2 == NULL)
+				break;
+			if (ptr2->data % 2 != 0)
+			{
+				arr[0]++;
+				ptr1->random = ptr2;
+				ptr1 = ptr2;
+			}
+
+		}
+		while (ptr1->data % 2 != 0){
+			ptr1 = ptr1->next;
+			ptr2 = ptr2->next;
+		}
+		while (1){
+			ptr2 = ptr2->next;
+			if (ptr2 == NULL)
+				break;
+			if (ptr2->data % 2 == 0)
+			{
+				arr[1]++;
+				ptr1->random = ptr2;
+				ptr1 = ptr2;
+			}
+		}
+
+	}
+	ptr1 = head;
+	while (1)
+	{
+		if (ptr1 == NULL)
+			break;
+		printf("%d -> ", ptr1->data);
+		ptr1 = ptr1->random;
+	}
+	ptr1 = head->next;
+	printf("\n");
+	while (1)
+	{
+		if (ptr1 == NULL)
+			break;
+		printf("%d -> ", ptr1->data);
+		ptr1 = ptr1->random;
+	}
+	
+	return arr;
+
 }
